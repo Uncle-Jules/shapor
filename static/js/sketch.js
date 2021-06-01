@@ -7,11 +7,15 @@ let shapeCoords = []
 let shapes = []
 let play = false
 
+let form = null
+
 function setup() {
   canvas = createCanvas(1597, 987)
   background("#333333")
   showFibonacci()
   fillShapeCoords()
+
+  Tone.Transport.bpm.value = 120
 }
 
 function draw() {
@@ -75,25 +79,32 @@ function fillShapeCoords() {
   })
 }
 
-function addShape() {
-  let sides = document.getElementById("sides").value
-  let size = document.getElementById("size").value
-  let color = document.getElementById("color").value
-  let brightness = getBrightness(color)
+function addShape(form) {
+  form.submit(function(event) {
+    event.preventDefault()
+    let sides = document.getElementById("sides").value
+    let size = document.getElementById("size").value
+    let color = document.getElementById("color").value
+    let brightness = getBrightness(color)
+    let pattern = document.getElementById("pattern").value
+    let alpha = document.getElementById("alpha").value
+    let outline = document.getElementById("outline").value
+    let split = document.getElementById("split").value
 
-  let newShape = new Polygon(0, 0, sides, size, color, brightness) 
-  shapes.unshift(newShape)
-  shiftShapes()
+    let newShape = new Polygon(0, 0, sides, size, color, alpha, brightness, pattern, outline, split) 
+    shapes.unshift(newShape)
+    shiftShapes()
 
-  shapeToSound()
-
-  shapes = shapes.slice(0,14)
-
-  
+    shapes = shapes.slice(0,14)
+  })
 }
 
-function shapeToSound() {
-
+function updateSettings(form) {
+  form.submit(function(event) {
+    event.preventDefault()
+    Tone.Transport.bpm.value = document.getElementById("bpm").value
+    Tone.Master.volume.value = document.getElementById("volume").value
+  })
 }
 
 function shiftShapes() {
@@ -104,17 +115,6 @@ function shiftShapes() {
   })
 }
 
-function getBrightness(hex) {
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-      return r + r + g + g + b + b;
-  });
-
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return Math.max(parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16))
-}
-
 function mouseClicked() {
   if(!play) {
     Tone.start()
@@ -122,3 +122,6 @@ function mouseClicked() {
     play = true
   }
 }
+
+// Event listeners
+

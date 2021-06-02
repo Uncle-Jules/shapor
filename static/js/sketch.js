@@ -79,23 +79,41 @@ function fillShapeCoords() {
   })
 }
 
-function addShape(form) {
+function addPolygon(form) {
   form.submit(function(event) {
     event.preventDefault()
     let sides = document.getElementById("sides").value
     let size = document.getElementById("size").value
-    let color = document.getElementById("color").value
-    let brightness = getBrightness(color)
+    let c = document.getElementById("color").value
+    let brightness = getBrightness(c)
     let pattern = document.getElementById("pattern").value
     let alpha = document.getElementById("alpha").value
     let outline = document.getElementById("outline").value
     let split = document.getElementById("split").value
 
-    let newShape = new Polygon(0, 0, sides, size, color, alpha, brightness, pattern, outline, split) 
+    let newShape = new Polygon(0, 0, sides, size, c, alpha, brightness, pattern, outline, split) 
     shapes.unshift(newShape)
     shiftShapes()
 
-    shapes = shapes.slice(0,14)
+    shapes = shapes.slice(0, 14)
+  })
+}
+
+function addEllipse(form) {
+  form.submit(function(event) {
+    event.preventDefault()
+    let w = parseInt(document.getElementById("ellipse-width").value)
+    let h = parseInt(document.getElementById("ellipse-height").value)
+    let c = document.getElementById("ellipse-color").value
+    let outline = parseInt(document.getElementById("ellipse-outline").value)
+    let type = document.getElementById("ellipse-type").value
+
+    let newShape = new Ellipse(0, 0, w, h, c, outline, type)
+
+    shapes.unshift(newShape)
+    shiftShapes()
+
+    shapes = shapes.slice(0, 14)
   })
 }
 

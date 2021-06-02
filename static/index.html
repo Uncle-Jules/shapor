@@ -17,6 +17,7 @@
 <body style="height: 100%">
   <script src="./js/utils.js"></script>
   <script src="./js/polygon.js"></script>
+  <script src="./js/ellipse.js"></script>
   <script src="./js/box.js"></script>
   <script src="./js/sketch.js"></script>
   
@@ -56,14 +57,14 @@
       </div>
       <div class="accordion-item border-warning">
         <h2 class="accordion-header" id="polygons-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#polygons-container" aria-expanded="true" aria-controls="polygons-container">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#polygons-container" aria-expanded="false" aria-controls="polygons-container">
             Polygons&nbsp;&nbsp;<i class="bi bi-triangle"></i>
           </button>
         </h2>
-        <div id="polygons-container" class="accordion-collapse collapse show" aria-labelledby="polygons-header" data-bs-parent="#shapor-accordion">
+        <div id="polygons-container" class="accordion-collapse collapse" aria-labelledby="polygons-header" data-bs-parent="#shapor-accordion">
           <div class="accordion-body">
             <div class="row">
-              <form id="add-shape-form">
+              <form id="add-polygon-form">
                 <div class="mx-3">
                   <div class="row mb-3">
                     <div class="col">
@@ -116,55 +117,51 @@
       </div>
       <div class="accordion-item border-warning">
         <h2 class="accordion-header" id="ellipses-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ellipses-container" aria-expanded="false" aria-controls="ellipses-container">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ellipses-container" aria-expanded="true" aria-controls="ellipses-container">
             Ellipses&nbsp;&nbsp;<i class="bi bi-circle"></i>
           </button>
         </h2>
-        <div id="ellipses-container" class="accordion-collapse collapse" aria-labelledby="ellipses-header" data-bs-parent="#shapor-accordion">
+        <div id="ellipses-container" class="accordion-collapse collapse show" aria-labelledby="ellipses-header" data-bs-parent="#shapor-accordion">
           <div class="accordion-body">
             <div class="row">
               <form id="add-ellipse-form">
                 <div class="mx-3">
                   <div class="row mb-3">
                     <div class="col">
-                      <label for="sides" class="form-label">Sides</label>
-                      <input type="text" class="form-control" id="sides" value=4>
+                      <label for="ellipse-width" class="form-label">Width</label>
+                      <input type="text" class="form-control" id="ellipse-width" value=200 min="10" max="450">
+                      <div id="ellipseWidthHelp" class="form-text">Min = 10, <br> Max = 450</div>
                     </div>
                     <div class="col">
-                      <label for="size" class="form-label">Size</label>
-                      <input type="text" class="form-control" value="200" min="10" max="450" id="size" aria-describedby="sizeHelp"></input>
-                      <div id="sizeHelp" class="form-text">Min = 10, <br> Max = 450</div>
+                      <label for="ellipse-height" class="form-label">Height</label>
+                      <input type="text" class="form-control" value="200" min="10" max="450" id="ellipse-height">
+                      <div id="ellipseHeightHelp" class="form-text">Min = 10, <br> Max = 450</div>
                     </div>
-                  </div>
+                  </div>   
                   <div class="row mb-3">
                     <div class="col">
-                      <label for="color" class="form-label">Color (WIP)</label>
-                      <input type="color" value="#FF0000" class="form-control" id="color">
+                      <label for="ellipse-outline" class="form-label">Outline</label>
+                      <input type="text" class="form-control" value="30" min="0" max="60" id="ellipse-outline">
+                      <div id="ellipseOutlineHelp" class="form-text">Min = 0, Max = 60</div>
                     </div>
-                    <div class="col">
-                      <label for="alpha">Alpha (WIP)</label>
-                      <input type="text" class="form-control" value="255" id="alpha" min="0" max="255">   
-                    </div>
-                  </div>
+                  </div>  
                   <div class="row mb-3">
                     <div class="col">
-                      <label for="outline">Outline</label>
-                      <input type="text" class="form-control" value="30" id="outline" min="0" max="60" aria-describedby="outlineHelp">
-                      <div id="outlineHelp" class="form-text">Min = 0, Max = 60</div>
+                      <label for="ellipse-type" class="form-label">Type</label>
+                      <select class="form-select" id="ellipse-type">
+                        <option selected value="smooth">Smooth</option>
+                        <option value="spiky">Spiky</option>
+                        <option value="toothy">Toothy</option>
+                        <option value="choppy">Choppy</option>
+                      </select>
                     </div>
+                  </div>    
+                  <div class="row">
                     <div class="col">
-                      <label for="split">Split</label>
-                      <input type="text" class="form-control" value="4" id="split" aria-describedby="splitHelp">
-                      <div id="splitHelp" class="form-text"></div>
+                      <label for="ellipse-color" class="form-label">Color (WIP)</label>
+                      <input type="color" value="#FF0000" class="form-control" id="ellipse-color">
                     </div>
-                  </div>
-                  <div class="row mb-3">
-                    <div class="col">
-                      <label for="pattern" class="form-label">Pattern</label>
-                      <input type="text" class="form-control" value="x" pattern="^[-x-]+$" id="pattern" aria-describedby="patternHelp"> 
-                      <div id="patternHelp" class="form-text">Use "x" to indicate a beat and "-" for a pause. Ex: x-x-</div>
-                    </div>
-                  </div>
+                  </div>          
                   <div class="row">
                     <button type="submit" class="btn btn-primary mt-4">Add shape</button>
                   </div>
@@ -179,7 +176,8 @@
 
   <script>
     updateSettings($("#update-form"))
-    addShape($("#add-shape-form"))
+    addPolygon($("#add-polygon-form"))
+    addEllipse($("#add-ellipse-form"))
   </script>
 </body>
 </html>

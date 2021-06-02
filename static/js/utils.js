@@ -33,16 +33,25 @@ function getBrightness(hex) {
   return Math.max(parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16))
 }
 
-function linToLog(position) {
-  // position will be between 0 and 255
-  var minp = 0;
-  var maxp = 60;
+function linToLog(position, minp, maxp, minLog, maxLog) {
 
   // The result should be between 0 an 100
-  var minv = Math.log(0.1);
-  var maxv = Math.log(2);
+  var minv = Math.log(minLog);
+  var maxv = Math.log(maxLog);
 
   // calculate adjustment factor
   var scale = (maxv-minv) / (maxp-minp);
   return Math.exp(minv + scale*(position-minp));
+}
+
+function tranposeNumber(position, minp, maxp, minv, maxv) {
+  let percentage = position / (minp + maxp)
+
+  let newValue;
+  if(minv < 0 || maxv < 0) {
+    newValue = ((minv + minv * -1 + maxv + minv * -1) * percentage) + minv
+  } else {
+    newValue = (minv + maxv) * percentage
+  }
+  return newValue
 }

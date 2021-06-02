@@ -26,7 +26,6 @@ class Polygon {
       sides === "9" ? new Tone.NoiseSynth().toDestination() :
       sides === "10" ? new Tone.PolySynth().toDestination() : new Tone.Synth().toDestination()
 
-    this.firstTime = 0
     this.fontSize = 30
 
     this.loop = new Tone.Loop((time) => {
@@ -34,7 +33,7 @@ class Polygon {
       let beat = this.patternGen.next().value
 
       if (beat === "x") {
-        this.synth.triggerAttackRelease(reverseNumber(this.originalRadius, 0, 450) * 2, `${this.split}n`, time, linToLog(this.originalOutline))
+        this.synth.triggerAttackRelease(reverseNumber(this.originalRadius, 0, 450) * 2, `${this.split}n`, time, linToLog(this.originalOutline, 0, 60, 0.1, 2))
       }    
     }, `${this.split}n`)
     this.loop.start(0);
@@ -49,10 +48,6 @@ class Polygon {
       let angle = TWO_PI / sides
       beginShape()
       for (let a = 0; a < TWO_PI; a += angle) {
-        
-        if(this.firstTime < 4) {
-          this.firstTime++
-        }
 
         let sx = this.x + cos(a) * this.radius
         let sy = this.y + sin(a) * this.radius

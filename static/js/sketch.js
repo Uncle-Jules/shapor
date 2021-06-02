@@ -105,10 +105,11 @@ function addEllipse(form) {
     let w = parseInt(document.getElementById("ellipse-width").value)
     let h = parseInt(document.getElementById("ellipse-height").value)
     let c = document.getElementById("ellipse-color").value
+    let alpha = parseInt(document.getElementById("ellipse-alpha").value)
     let outline = parseInt(document.getElementById("ellipse-outline").value)
     let type = document.getElementById("ellipse-type").value
 
-    let newShape = new Ellipse(0, 0, w, h, c, outline, type)
+    let newShape = new Ellipse(0, 0, w, h, c, alpha, outline, type)
 
     shapes.unshift(newShape)
     shiftShapes()

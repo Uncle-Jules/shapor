@@ -12,6 +12,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.min.js" integrity="sha512-gQVBYBvfC+uyor5Teonjr9nmY1bN+DlOCezkhzg4ShpC5q81ogvFsr5IV4xXAj6HEtG7M1Pb2JCha97tVFItYQ==" crossorigin="anonymous"></script>
   <script src="https://tonejs.github.io/build/Tone.js" crossorigin="anonymous"></script>
+  <link rel="icon" href="./img/circle.svg">
   <title>Shapor</title>
 </head>
 <body style="height: 100%">
@@ -57,11 +58,11 @@
       </div>
       <div class="accordion-item border-warning">
         <h2 class="accordion-header" id="polygons-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#polygons-container" aria-expanded="false" aria-controls="polygons-container">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#polygons-container" aria-expanded="true" aria-controls="polygons-container">
             Polygons&nbsp;&nbsp;<i class="bi bi-triangle"></i>
           </button>
         </h2>
-        <div id="polygons-container" class="accordion-collapse collapse" aria-labelledby="polygons-header" data-bs-parent="#shapor-accordion">
+        <div id="polygons-container" class="accordion-collapse collapse show" aria-labelledby="polygons-header" data-bs-parent="#shapor-accordion">
           <div class="accordion-body">
             <div class="row">
               <form id="add-polygon-form">
@@ -69,33 +70,34 @@
                   <div class="row mb-3">
                     <div class="col">
                       <label for="sides" class="form-label">Sides</label>
-                      <input type="text" class="form-control" id="sides" value=4>
+                      <input type="number" class="form-control" id="sides" min="3" max="10" value=4>
+                      <div id="sidesHelp" class="form-text">Min = 3, <br> Max = 10</div>
                     </div>
                     <div class="col">
                       <label for="size" class="form-label">Size</label>
-                      <input type="text" class="form-control" value="200" min="10" max="450" id="size" aria-describedby="sizeHelp"></input>
+                      <input type="number" class="form-control" value="200" min="10" max="450" id="size" aria-describedby="sizeHelp"></input>
                       <div id="sizeHelp" class="form-text">Min = 10, <br> Max = 450</div>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <div class="col">
-                      <label for="color" class="form-label">Color (WIP)</label>
-                      <input type="color" value="#FF0000" class="form-control" id="color">
+                      <label for="color" class="form-label">Color</label>
+                      <input type="color" value="#000000" class="form-control" id="color">
                     </div>
                     <div class="col">
-                      <label for="alpha">Alpha (WIP)</label>
-                      <input type="text" class="form-control" value="255" id="alpha" min="0" max="255">   
+                      <label for="alpha">Alpha</label>
+                      <input type="number" class="form-control" value="255" id="alpha" min="0" max="255">   
                     </div>
                   </div>
                   <div class="row mb-3">
                     <div class="col">
                       <label for="outline">Outline</label>
-                      <input type="text" class="form-control" value="30" id="outline" min="0" max="60" aria-describedby="outlineHelp">
+                      <input type="number" class="form-control" value="30" id="outline" min="0" max="60" aria-describedby="outlineHelp">
                       <div id="outlineHelp" class="form-text">Min = 0, Max = 60</div>
                     </div>
                     <div class="col">
                       <label for="split">Split</label>
-                      <input type="text" class="form-control" value="4" id="split" aria-describedby="splitHelp">
+                      <input type="number" class="form-control" min="2" value="4" id="split" aria-describedby="splitHelp">
                       <div id="splitHelp" class="form-text"></div>
                     </div>
                   </div>
@@ -117,11 +119,11 @@
       </div>
       <div class="accordion-item border-warning">
         <h2 class="accordion-header" id="ellipses-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ellipses-container" aria-expanded="true" aria-controls="ellipses-container">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ellipses-container" aria-expanded="false" aria-controls="ellipses-container">
             Ellipses&nbsp;&nbsp;<i class="bi bi-circle"></i>
           </button>
         </h2>
-        <div id="ellipses-container" class="accordion-collapse collapse show" aria-labelledby="ellipses-header" data-bs-parent="#shapor-accordion">
+        <div id="ellipses-container" class="accordion-collapse collapse" aria-labelledby="ellipses-header" data-bs-parent="#shapor-accordion">
           <div class="accordion-body">
             <div class="row">
               <form id="add-ellipse-form">
@@ -129,19 +131,19 @@
                   <div class="row mb-3">
                     <div class="col">
                       <label for="ellipse-width" class="form-label">Width</label>
-                      <input type="text" class="form-control" id="ellipse-width" value=200 min="10" max="450">
+                      <input type="number" class="form-control" id="ellipse-width" value=200 min="10" max="450">
                       <div id="ellipseWidthHelp" class="form-text">Min = 10, <br> Max = 450</div>
                     </div>
                     <div class="col">
                       <label for="ellipse-height" class="form-label">Height</label>
-                      <input type="text" class="form-control" value="200" min="10" max="450" id="ellipse-height">
+                      <input type="number" class="form-control" value="200" min="10" max="450" id="ellipse-height">
                       <div id="ellipseHeightHelp" class="form-text">Min = 10, <br> Max = 450</div>
                     </div>
                   </div>   
                   <div class="row mb-3">
                     <div class="col">
                       <label for="ellipse-outline" class="form-label">Outline</label>
-                      <input type="text" class="form-control" value="30" min="0" max="60" id="ellipse-outline">
+                      <input type="number" class="form-control" value="30" min="0" max="60" id="ellipse-outline">
                       <div id="ellipseOutlineHelp" class="form-text">Min = 0, Max = 60</div>
                     </div>
                   </div>  
@@ -158,8 +160,12 @@
                   </div>    
                   <div class="row">
                     <div class="col">
-                      <label for="ellipse-color" class="form-label">Color (WIP)</label>
-                      <input type="color" value="#FF0000" class="form-control" id="ellipse-color">
+                      <label for="ellipse-color" class="form-label">Color</label>
+                      <input type="color" value="#000000" class="form-control" id="ellipse-color">
+                    </div>
+                    <div class="col">
+                      <label for="ellipse-alpha">Alpha</label>
+                      <input type="number" class="form-control" value="255" id="ellipse-alpha" min="0" max="255">   
                     </div>
                   </div>          
                   <div class="row">

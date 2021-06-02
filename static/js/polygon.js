@@ -14,8 +14,6 @@ class Polygon {
     this.originalOutline = outline
     this.outline = outline
     this.split = split
-
-    this.fiboPos = 0
     this.synth = 
       sides === "3" ? new Tone.AMSynth().toDestination() : 
       sides === "4" ? new Tone.Synth().toDestination() :
@@ -26,6 +24,27 @@ class Polygon {
       sides === "9" ? new Tone.NoiseSynth().toDestination() :
       sides === "10" ? new Tone.PolySynth().toDestination() : new Tone.Synth().toDestination()
 
+    if(this.rgb[0] > 0) {
+      this.vibrato = new Tone.Vibrato(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+      this.synth.connect(this.vibrato)
+    }
+
+    if(this.rgb[1] > 0) {
+      this.tremolo = new Tone.Tremolo(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+      this.synth.connect(this.tremolo)
+    }
+
+    if(this.rgb[2] > 0) {
+      this.reverb = new Tone.Reverb(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+      this.synth.connect(this.reverb)
+    }
+
+    if(this.alpha < 255) {
+      this.filter = new Tone.Filter(tranposeNumber(reverseNumber(this.alpha, 0, 255), 0, 255, 0, 5000), "lowpass").toDestination()
+      this.synth.connect(this.filter)
+    }
+    
+    this.fiboPos = 0
     this.fontSize = 30
 
     this.loop = new Tone.Loop((time) => {

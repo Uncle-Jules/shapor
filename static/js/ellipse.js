@@ -1,10 +1,12 @@
 class Ellipse {
-  constructor(x, y, w, h, c, outline, type) {
+  constructor(x, y, w, h, c, alpha, outline, type) {
     this.x = x
     this.y = y
     this.w = w
     this.h = h
     this.c = c
+    this.alpha = alpha
+    this.rgb = getRGB(c)
     this.type = type
     this.outline = outline
     this.originalOutline = outline
@@ -16,12 +18,35 @@ class Ellipse {
       type === "choppy" ? new Tone.Oscillator(h, `square${this.oscNum}`).toDestination().start() : new Tone.Oscillator(h, "sine").toDestination().start()
     this.osc.volume.value = tranposeNumber(outline, 0, 60, -40, 10)
 
+    if(this.rgb[0] > 0) {
+      this.vibrato = new Tone.Vibrato(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+      this.osc.connect(this.vibrato)
+    }
+
+    if(this.rgb[1] > 0) {
+      this.tremolo = new Tone.Tremolo(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+      this.osc.connect(this.tremolo)
+    }
+
+    if(this.rgb[2] > 0) {
+      this.reverb = new Tone.Reverb(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+      this.osc.connect(this.reverb)
+    }
+
+    if(this.alpha < 255) {
+      this.filter = new Tone.Filter(tranposeNumber(reverseNumber(this.alpha, 0, 255), 0, 255, 0, 5000), "lowpass").toDestination()
+      this.osc.connect(this.filter)
+    }
+
     this.fiboPos = 0
     this.decoVal = 10
 
     this.show = function() {
       push()
-      fill(this.c)     
+
+      let realColor = color(this.c)
+      realColor.setAlpha(this.alpha)
+      fill(realColor)   
       let angle = TWO_PI / 100
       beginShape()
 

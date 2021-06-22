@@ -51,7 +51,7 @@ class Polygon {
       let beat = this.patternGen.next().value
 
       if (beat === "x") {
-        this.synth.triggerAttackRelease(reverseNumber(this.originalRadius, 0, 450) * 2, `${this.split}n`, time, linToLog(this.originalOutline, 0, 60, 0.1, 2))
+        this.synth.triggerAttackRelease(reverseNumber(this.originalRadius, 10, 450) * 2, `${this.split}n`, time, linToLog(this.originalOutline, 0, 60, 0.1, 2))
       }    
     }, `${this.split}n`)
     this.loop.start(0);

@@ -150,7 +150,7 @@ class Ellipse {
         type === "spiky" ? new Tone.Oscillator(h, `triangle${this.oscNum}`).toDestination().start() :
         type === "toothy" ? new Tone.Oscillator(h, `sawtooth${this.oscNum}`).toDestination().start() :
         type === "choppy" ? new Tone.Oscillator(h, `square${this.oscNum}`).toDestination().start() : new Tone.Oscillator(h, "sine").toDestination().start()
-      this.osc.volume.value = tranposeNumber(outline, 0, 60, -40, 10)
+      this.osc.volume.value = tranposeNumber(this.originalOutline, 0, 60, -40, 10)
   
       if(this.rgb[0] > 0) {
         this.vibrato = new Tone.Vibrato(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()

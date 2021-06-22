@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.min.js" integrity="sha512-gQVBYBvfC+uyor5Teonjr9nmY1bN+DlOCezkhzg4ShpC5q81ogvFsr5IV4xXAj6HEtG7M1Pb2JCha97tVFItYQ==" crossorigin="anonymous"></script>
+  <script src="https://tonejs.github.io/build/Tone.js" crossorigin="anonymous"></script>
+  <link rel="icon" href="./img/circle.svg">
+  <title>Shapor - The Sound of Shapes</title>
+</head>
+<body style="height: 100%">
+  <script src="./js/utils.js"></script>
+  <script src="./js/polygon.js"></script>
+  <script src="./js/ellipse.js"></script>
+  <script src="./js/box.js"></script>
+  <script src="./js/sketch.js"></script>
+  <i class="bi bi-volume-up-fill sound-icon fs-3" onclick="muteUnmute(this)"></i>
+  <div class="container">
+    <div class="row">
+      <div class="col mb-3">
+        <h1>Shapor</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        
+        <h5>Currently: <span onclick="changeMode()" id="mode-button"><span id="heading">Creating</span> <i id="mode-icon" class="bi bi-plus-square"></i></span></h5>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="container">
+        <div class="accordion" id="shapor-accordion">
+          <div class="accordion-item border-info">
+            <h2 class="accordion-header" id="settings-header">
+              <button id="settings-button" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#settings-container" aria-expanded="false" aria-controls="settings-container">
+                Settings&nbsp;&nbsp;<i class="bi bi-gear"></i>
+              </button>
+            </h2>
+            <div id="settings-container" class="accordion-collapse collapse" aria-labelledby="settings-header" data-bs-parent="#shapor-accordion">
+              <div class="accordion-body">
+                <div class="row">
+                  <form id="update-form">
+                    <div class="mx-3">
+                      <div class="row">
+                        <div class="col">
+                          <label for="volume">Volume</label>
+                          <input type="range" class="form-range" value="0" id="volume" min="-10" max="10">   
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <label for="bpm" class="form-label">BPM</label>
+                          <input type="text" class="form-control" value="120" id="bpm">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col d-grid">
+                          <button id="update-form" type="submit" class="btn btn-primary mt-4">Update settings</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>  
+          </div>
+          <div id="polygon-accordion" class="accordion-item border-info">
+            <h2 class="accordion-header" id="polygons-header">
+              <button id="polygons-button" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#polygons-container" aria-expanded="true" aria-controls="polygons-container">
+                Polygons&nbsp;&nbsp;<i class="bi bi-triangle"></i>
+              </button>
+            </h2>
+            <div id="polygons-container" class="accordion-collapse collapse show" aria-labelledby="polygons-header" data-bs-parent="#shapor-accordion">
+              <div class="accordion-body">
+                <div class="row">
+                  <form id="add-polygon-form">
+                    <div class="mx-3">
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="polygon-sides" class="form-label">Sides</label>
+                          <input type="number" class="form-control" id="polygon-sides" min="3" max="9" value=4>
+                          <div id="sidesHelp" class="form-text">Min = 3, <br> Max = 9</div>
+                        </div>
+                        <div class="col">
+                          <label for="polygon-size" class="form-label">Size</label>
+                          <input type="number" class="form-control" value="200" min="10" max="450" id="polygon-size" aria-describedby="sizeHelp"></input>
+                          <div id="sizeHelp" class="form-text">Min = 10, <br> Max = 450</div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="polygon-color" class="form-label">Color</label>
+                          <input type="color" value="#000000" class="form-control" id="polygon-color">
+                        </div>
+                        <div class="col">
+                          <label for="polygon-alpha">Alpha</label>
+                          <input type="number" class="form-control" value="255" id="polygon-alpha" min="0" max="255">   
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="polygon-outline">Outline</label>
+                          <input type="number" class="form-control" value="30" id="polygon-outline" min="0" max="60" aria-describedby="outlineHelp">
+                          <div id="outlineHelp" class="form-text">Min = 0, Max = 60</div>
+                        </div>
+                        <div class="col">
+                          <label for="polygon-split">Split</label>
+                          <input type="number" class="form-control" min="2" value="4" id="polygon-split" aria-describedby="splitHelp">
+                          <div id="splitHelp" class="form-text"></div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="polygon-pattern" class="form-label">Pattern</label>
+                          <input type="text" class="form-control" value="x" pattern="^[-x-]+$" id="polygon-pattern" aria-describedby="patternHelp"> 
+                          <div id="patternHelp" class="form-text">Use "x" to indicate a beat and "-" for a pause. Ex: x-x-</div>
+                        </div>
+                      </div>
+                      <div class="row" id="polygon-actions">
+                        <div class="col text-center d-grid">
+                          <button type="submit" class="btn btn-primary mt-4">Add shape</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>  
+          </div>
+          <div class="accordion-item border-info">
+            <h2 class="accordion-header" id="ellipses-header">
+              <button id="ellipses-button" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ellipses-container" aria-expanded="false" aria-controls="ellipses-container">
+                Ellipses&nbsp;&nbsp;<i class="bi bi-circle"></i>
+              </button>
+            </h2>
+            <div id="ellipses-container" class="accordion-collapse collapse" aria-labelledby="ellipses-header" data-bs-parent="#shapor-accordion">
+              <div class="accordion-body">
+                <div class="row">
+                  <form id="add-ellipse-form">
+                    <div class="mx-3">
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="ellipse-width" class="form-label">Width</label>
+                          <input type="number" class="form-control" id="ellipse-width" value=200 min="10" max="450">
+                          <div id="ellipseWidthHelp" class="form-text">Min = 10, <br> Max = 450</div>
+                        </div>
+                        <div class="col">
+                          <label for="ellipse-height" class="form-label">Height</label>
+                          <input type="number" class="form-control" value="200" min="10" max="450" id="ellipse-height">
+                          <div id="ellipseHeightHelp" class="form-text">Min = 10, <br> Max = 450</div>
+                        </div>
+                      </div>   
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="ellipse-outline" class="form-label">Outline</label>
+                          <input type="number" class="form-control" value="30" min="0" max="60" id="ellipse-outline">
+                          <div id="ellipseOutlineHelp" class="form-text">Min = 0, Max = 60</div>
+                        </div>
+                      </div>  
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="ellipse-type" class="form-label">Type</label>
+                          <select class="form-select" id="ellipse-type">
+                            <option selected value="smooth">Smooth</option>
+                            <option value="spiky">Spiky</option>
+                            <option value="toothy">Toothy</option>
+                            <option value="choppy">Choppy</option>
+                          </select>
+                        </div>
+                      </div>    
+                      <div class="row">
+                        <div class="col">
+                          <label for="ellipse-color" class="form-label">Color</label>
+                          <input type="color" value="#000000" class="form-control" id="ellipse-color">
+                        </div>
+                        <div class="col">
+                          <label for="ellipse-alpha">Alpha</label>
+                          <input type="number" class="form-control" value="255" id="ellipse-alpha" min="0" max="255">   
+                        </div>
+                      </div>          
+                      <div class="row" id="ellipse-actions">
+                        <div class="col text-center d-grid">
+                          <button type="submit" class="btn btn-primary mt-4">Add shape</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>   
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button id="prev-shape" style="visibility: hidden;" class="btn btn-dark float-start border-info" onclick="changeCurrentShape(-1)">Previous Shape</button>
+      </div>
+      <div class="col">
+        <button id="next-shape" style="visibility: hidden;" class="btn btn-dark float-end border-info" onclick="changeCurrentShape(1)">Next Shape</button>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    updateSettings($("#update-form"))
+    addPolygon($("#add-polygon-form"))
+    addEllipse($("#add-ellipse-form"))
+  </script>
+</body>
+</html>

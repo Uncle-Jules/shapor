@@ -22,3 +22,27 @@ canvas {
   padding-right: 0;
 }
 
+.sound-icon {
+  position: absolute;
+  right: 7px;
+  top:0;
+  z-index: 999;
+  color: #F39C12;
+  cursor: pointer;
+}
+
+.mode-icon {
+  cursor: pointer;
+}
+
+.mode-icon-warning:hover {
+  color: #F39C12;
+}
+
+.mode-icon-info:hover {
+  color: #3498DB;
+}
+
+.disabled {
+  color: rgb(141, 141, 141);
+}

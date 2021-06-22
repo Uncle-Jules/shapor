@@ -55,3 +55,8 @@ function tranposeNumber(position, minp, maxp, minv, maxv) {
   }
   return newValue
 }
+
+function invertHex(hex) { 
+  hex = hex.slice(1)
+  return `#${(Number(`0x1${hex}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()}`
+}

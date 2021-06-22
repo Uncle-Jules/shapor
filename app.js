@@ -5,7 +5,7 @@ let app = express()
 let http = require("http")
 let server = http.Server(app)
 
-app.use(express.static("static"))
+app.use(express.static("src"))
 
 server.listen(PORT, function() {
   console.log("Shapor running...");

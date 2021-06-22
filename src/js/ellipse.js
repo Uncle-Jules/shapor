@@ -3,7 +3,9 @@ class Ellipse {
     this.x = x
     this.y = y
     this.w = w
+    this.originalW = w
     this.h = h
+    this.originalH = h
     this.c = c
     this.alpha = alpha
     this.rgb = getRGB(c)
@@ -38,7 +40,7 @@ class Ellipse {
       this.osc.connect(this.filter)
     }
 
-    this.fiboPos = 0
+    this.fiboPos = -1
     this.decoVal = 10
 
     this.show = function() {
@@ -110,7 +112,7 @@ class Ellipse {
       pop()
     }
 
-    this.changeCoords = function(x, y, r1, r2) {
+    this.changeCoords = function(r1, r2) {
       if (r1 && r2) {
         this.w = this.w * (r2 / r1)
         this.h = this.h * (r2 / r1)
@@ -118,12 +120,57 @@ class Ellipse {
         this.decoVal = this.decoVal * (r2 / r1)
       }
 
-      this.x = x
-      this.y = y
       this.fiboPos++
-      if(this.fiboPos === 14) {
-        this.osc.dispose()
+      if(this.fiboPos === 13) {
+        this.remove()
       }
+    }
+
+    this.remove = function() {
+      this.osc.dispose()
+    }
+
+    this.edit = function(w, h, c, alpha, outline, type) {
+      this.w = w * (this.w / this.originalW)
+      this.originalW = w
+      this.h = h * (this.h / this.originalH)
+      this.originalH = h
+      this.c = c
+      this.alpha = alpha
+      this.rgb = getRGB(c)
+      this.type = type
+      this.outline = outline * (this.outline / this.originalOutline)
+      this.originalOutline = outline
+
+      this.oscNum = reverseNumber(Math.floor(tranposeNumber(w, 10, 450, 1, 32)), 1, 32)
+
+      this.osc.dispose()
+      this.osc = 
+        type === "smooth" ? new Tone.Oscillator(h, `sine${this.oscNum}`).toDestination().start() :
+        type === "spiky" ? new Tone.Oscillator(h, `triangle${this.oscNum}`).toDestination().start() :
+        type === "toothy" ? new Tone.Oscillator(h, `sawtooth${this.oscNum}`).toDestination().start() :
+        type === "choppy" ? new Tone.Oscillator(h, `square${this.oscNum}`).toDestination().start() : new Tone.Oscillator(h, "sine").toDestination().start()
+      this.osc.volume.value = tranposeNumber(outline, 0, 60, -40, 10)
+  
+      if(this.rgb[0] > 0) {
+        this.vibrato = new Tone.Vibrato(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+        this.osc.connect(this.vibrato)
+      }
+  
+      if(this.rgb[1] > 0) {
+        this.tremolo = new Tone.Tremolo(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+        this.osc.connect(this.tremolo)
+      }
+  
+      if(this.rgb[2] > 0) {
+        this.reverb = new Tone.Reverb(tranposeNumber(this.rgb[0], 0, 255, 1, 10), 0.75).toDestination()
+        this.osc.connect(this.reverb)
+      }
+  
+      if(this.alpha < 255) {
+        this.filter = new Tone.Filter(tranposeNumber(reverseNumber(this.alpha, 0, 255), 0, 255, 0, 5000), "lowpass").toDestination()
+        this.osc.connect(this.filter)
+      } 
     }
   }
 }
